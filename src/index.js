@@ -1,2 +1,12 @@
+import {Excel} from '@/components/excel/Excel'
+import {Header} from '@/components/header/Header'
+import {Toolbar} from '@/components/toolar/Toolbar'
+import {Table} from '@/components/table/Table'
+import {Formula} from '@/components/formula/Formula'
 import './scss/index.scss'
-console.log('all working')
+
+
+const excel= new Excel('#app', {
+  components: [Header, Toolbar, Formula, Table]
+})
+excel.render()
