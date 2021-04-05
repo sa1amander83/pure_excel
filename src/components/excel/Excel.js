@@ -12,14 +12,13 @@ export class Excel {
       const component = new Component($el)
       $el.html(component.toHTML())
       $root.append($el)
+      return component
     })
     return $root
   }
 
   render() {
     this.$el.append(this.getRoot())
-    this.components.forEach(component => {
-      component.init()
-    } )
+    this.components.forEach(component => component.init())
   }
 }
