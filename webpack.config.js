@@ -40,7 +40,7 @@ module.exports = {
 
   devtool: isDev?'source-map':false,
   devServer: {
-    port: 3000,
+    port: 3333,
     hot: isDev
   },
   plugins: [
