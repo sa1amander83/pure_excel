@@ -1,8 +1,9 @@
 import {ExcelComponent} from '@core/ExcelComponent'
 import {createTable} from '@/components/table/table.template'
-
+import {resizeHandler} from '@/components/table/table.resize'
+import {shouldResize} from '@/components/table/tableHelper'
 export class Table extends ExcelComponent {
-  static className ='excel__table'
+  static className = 'excel__table'
 
   constructor($root) {
     super($root, {
@@ -15,21 +16,9 @@ export class Table extends ExcelComponent {
     return createTable()
   }
 
-  onClick() {
-    console.log('click')
-  }
-
   onMousedown(event) {
-    // console.log(event.target.getAttribute('data-resize'))
-    if (event.target.dataset.resize) {
-      console.log('start resize', event.target.dataset.resize)
+    if (shouldResize(event)) {
+      resizeHandler(this.$root, event)
     }
-  }
-
-  onMousemove() {
-    console.log('mousemove')
-  }
-  onMouseup() {
-    console.log('mouseup')
   }
 }

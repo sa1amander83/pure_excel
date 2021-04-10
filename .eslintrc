@@ -11,7 +11,8 @@
     "comma-dangle": "off",
     "require-jsdoc": "off",
     "linebreak-style": ["error", "windows"],
-    "operator-linebreak": "off"
+    "operator-linebreak": "off",
+    "no-trailing-spaces": "off"
   },
   "extends": ["eslint:recommended", "google"]
 }

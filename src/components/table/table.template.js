@@ -2,15 +2,16 @@ const letterCode= {
   A: 65,
   Z: 90
 }
-function toCell() {
+
+function toCell(_, col) {
   return `
-    <div class="cell" contenteditable="">
+    <div class="cell" contenteditable data-col="${col}">
     </div>
     `
 }
-function toColumn(col) {
+function toColumn(col, index) {
   return `
-    <div class= "column">
+    <div class= "column" data-type="resizable" data-col="${index}">
     ${col}
     <div class="col-resize" data-resize="col"></div>
     </div> 
@@ -22,7 +23,7 @@ function createRow(index, content) {
   const resize = index ? '<div class="row-resize" data-resize="row"></div>':''
 
   return `
-    <div class="row">
+    <div class="row"  data-type="resizable">
     <div class="row-info">
 ${index ? index :''}
 ${resize}
@@ -56,7 +57,5 @@ export function createTable(rowsCount=20) {
         .join('')
     rows.push(createRow(i+1, cells))
   }
-
-
   return rows.join('')
 }
