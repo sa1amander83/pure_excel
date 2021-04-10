@@ -15,7 +15,7 @@ export class DomListener {
         const name = this.name ||''
         throw new Error(`Method ${method} is not implemented in ${name}`)
       }
-
+      this[method]=this[method].bind(this)
       this.$root.on(listener, this[method])
     })
   }
