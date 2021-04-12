@@ -55,8 +55,8 @@ display: flex;
     color: #111;
     white-space: nowrap;
     &.selected{
-      border: none;
-      outline: 2px solid $primary-color;
+
+      border: 2px solid $primary-color;
     }
   }
 
