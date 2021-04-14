@@ -12,9 +12,10 @@ export class Table extends ExcelComponent {
   constructor($root, options) {
     super($root, {
       name: 'Table',
-      listeners: ['mousedown', 'keydown'],
+      listeners: ['mousedown', 'keydown', 'input'],
       ...options
     });
+    this.unsubs =[]
   }
 
 
@@ -29,13 +30,19 @@ export class Table extends ExcelComponent {
   init() {
     super.init()
     const $cell= this.$root.find('[data-id="0:0"]')
-    this.selection.select($cell)
-    this.dispatcher.subscribe('its work', text => {
+    this.selectCell($cell)
+
+    this.$on('its work', text => {
       this.selection.current.text(text)
-      console.log('formula', text)
+    })
+    this.$on('formula', ()=>{
+      this.selection.current.focus()
     })
   }
-
+  selectCell($cell) {
+    this.selection.select($cell)
+    this.$emit('cell:select', $cell)
+  }
   onMousedown(event) {
     if (shouldResize(event)) {
       resizeHandler(this.$root, event)
@@ -60,8 +67,17 @@ export class Table extends ExcelComponent {
       event.preventDefault()
       const id = this.selection.current.id(true)
       const $next = this.$root.find(nextSelector(key, id))
-      this.selection.select($next)
+      this.selectCell($next)
     }
+  }
+
+  onInput(event) {
+    this.$emit('table:input', $(event.target))
+  }
+
+  destroy() {
+    super.destroy()
+    this.unsubs.forEach(unsub =>unsub())
   }
 }
 
