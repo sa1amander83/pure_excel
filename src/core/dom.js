@@ -1,20 +1,29 @@
 class Dom {
   constructor(selector) {
-    this.$el= typeof selector=== 'string'
-      ? document.querySelector(selector)
-       : selector
+    this.$el = typeof selector === 'string'
+        ? document.querySelector(selector)
+        : selector
   }
+
   html(html) {
-    if (typeof html ==='string') {
+    if (typeof html === 'string') {
       this.$el.innerHTML = html
+      return this
     }
     return this.$el.outerHTML.trim()
   }
 
   text(text) {
-    this.$el.textContent= text  
+    if (typeof text !== 'undefined') {
+      this.$el.textContent = text
+      return this
+    }
+    if (this.$el.tagName.toLowerCase() === 'input') {
+      return this.$el.value.trim()
+    }
+    return this.$el.textContent.trim()
   }
-  
+
   clear() {
     this.html('')
     return this
@@ -28,15 +37,21 @@ class Dom {
     this.$el.removeEventListener(eventType, callback)
   }
 
+  find(selector) {
+    return $(this.$el.querySelector(selector))
+  }
+
   append(node) {
     if (node instanceof Dom) {
       node = node.$el
     }
+
     if (Element.prototype.append) {
       this.$el.append(node)
     } else {
       this.$el.appendChild(node)
     }
+
     return this
   }
 
@@ -44,11 +59,31 @@ class Dom {
     return this.$el.dataset
   }
 
-  find(selector) {
-    return $(this.$el.querySelector(selector))
+  closest(selector) {
+    return $(this.$el.closest(selector))
   }
+
+  getCoords() {
+    return this.$el.getBoundingClientRect()
+  }
+
   findAll(selector) {
     return this.$el.querySelectorAll(selector)
+  }
+
+  css(styles = {}) {
+    Object
+        .keys(styles)
+        .forEach(key => {
+          this.$el.style[key] = styles[key]
+        })
+  }
+
+  getStyles(styles = []) {
+    return styles.reduce((res, s) => {
+      res[s] = this.$el.style[s]
+      return res
+    }, {})
   }
 
   id(parse) {
@@ -66,26 +101,21 @@ class Dom {
     this.$el.focus()
     return this
   }
+  attr(name, value) {
+    if (value) {
+      this.$el.setAttribute(name, value)
+      return this
+    }
+    return this.$el.getAttribute(name)
+  }
   addClass(className) {
     this.$el.classList.add(className)
+    return this
   }
 
   removeClass(className) {
     this.$el.classList.remove(className)
-  }
-
-  css(styles={}) {
-    Object.keys(styles).forEach(key => {
-      this.$el.style[key]= styles[key]
-    })
-  }
-
-   
-  closest(selector) {
-    return $(this.$el.closest(selector))
-  }
-  getCoords() {
-    return this.$el.getBoundingClientRect()
+    return this
   }
 }
 
@@ -93,7 +123,7 @@ export function $(selector) {
   return new Dom(selector)
 }
 
-$.create = (tagName, classes='')=> {
+$.create = (tagName, classes = '') => {
   const el = document.createElement(tagName)
   if (classes) {
     el.classList.add(classes)
