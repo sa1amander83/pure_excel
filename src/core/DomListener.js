@@ -8,9 +8,9 @@ export class DomListener {
     this.$root=$root
     this.listeners=listeners
   }
-  initDomListeners() {
+  initDOMListeners() {
     this.listeners.forEach(listener =>{
-      const method = getMetodName(listener)
+      const method = getMethodName(listener)
       if (!this[method]) {
         const name = this.name ||''
         throw new Error(`Method ${method} is not implemented in ${name}`)
@@ -19,14 +19,14 @@ export class DomListener {
       this.$root.on(listener, this[method])
     })
   }
-  removeDomListeners() {
+  removeDOMListeners() {
     this.listeners.forEach(listener=>{
-      const method = getMetodName(listener)
+      const method = getMethodName(listener)
       this.$root.off(listener, this[method])
     })
   }
 }
 
-function getMetodName(eventName) {
+function getMethodName(eventName) {
   return 'on'+capitalize(eventName)
 }
