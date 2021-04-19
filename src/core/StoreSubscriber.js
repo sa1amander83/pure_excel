@@ -1,6 +1,6 @@
 import {isEqual} from '@core/utils'
 
-export class StoreSbuscriber {
+export class StoreSubscriber {
   constructor(store) {
     this.store =store
     this.sub = null
@@ -22,6 +22,9 @@ export class StoreSbuscriber {
         }
       })
       this.prevState=this.store.getState()
+      if (process.env.NODE_ENV === 'development') {
+        window['redux'] = this.prevState
+      }
     })
   }
 

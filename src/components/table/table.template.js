@@ -1,5 +1,6 @@
 import {toInlineStyles} from '@core/utils'
 import {parse} from '@core/parse'
+import {defaultStyles} from '@/constants'
 const CODES = {
   A: 65,
   Z: 90
@@ -21,7 +22,9 @@ function toCell(state, row) {
     const id = `${row}:${col}`
     const width = getWidth(state.colState, col)
     const data = state.dataState[id]
-    const styles = toInlineStyles(state.stylesState[id])
+    const styles = toInlineStyles({
+      ...defaultStyles,
+      ...state.stylesState[id]})
     return `
       <div 
         class="cell" 
@@ -82,7 +85,7 @@ function withWidthFrom(state) {
 }
 
 export function createTable(rowsCount = 15, state = {}) {
-  const colsCount = CODES.Z - CODES.A + 1 // Compute cols count
+  const colsCount = CODES.Z - CODES.A + 1 // расчет количества колонок
   const rows = []
 
   const cols = new Array(colsCount)

@@ -28,7 +28,7 @@ export function createToolbar(state) {
     {
       value: {textAlign: 'right'},
       icon: 'format_align_right',
-      active: state ['textAlign'] === 'right',
+      active: state ['textAlign'] === 'right'
     },
     {
       value: {fontWeight: state['fontWeight']==='bold'? 'normal' : 'bold'},
